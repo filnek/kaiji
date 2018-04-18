@@ -65,20 +65,24 @@ function onConnection(sock){
 			p1chosen=number;
 			p1[number]=false;
 			if(p2chosen>-1){
-				if(side==1){
+				if(side==1){ //p1 cccs p2 ccce
 					
 					if(p1chosen==3&&p2chosen==3){
 						gameWon(1);
 					}else if(p1chosen==3&&p2chosen!=3){
 						gameWon(2);
+					}else if (p2chosen==3 && p1chosen!=3){
+						gameWon(2);					
 					}else{
 						globalEmit('info','draw!');
 					}
-					}else{
+					}else{ //p1 ccce p2 cccs
 					if(p1chosen==3&&p2chosen==3){
 						gameWon(2);
-					}else if(p1chosen==3&&p2chosen!=3){
+					}else if(p1chosen!=3&&p2chosen==3){
 						gameWon(1);
+					}else if (p1chosen==3 && p2chosen!=3){
+						gameWon(1);					
 					}else{
 						globalEmit('info','draw!');
 					}						
@@ -87,7 +91,6 @@ function onConnection(sock){
 					p2chosen=-1;
 			}
 			}
-						console.log(p1);
 		});
 		
 		
@@ -98,20 +101,24 @@ function onConnection(sock){
 			p2chosen=number;
 			p2[number]=false;
 			if(p1chosen>-1){
-				if(side==1){
+				if(side==1){ //p1 cccs p2 ccce
 					
 					if(p1chosen==3&&p2chosen==3){
 						gameWon(1);
 					}else if(p1chosen==3&&p2chosen!=3){
 						gameWon(2);
+					}else if (p2chosen==3 && p1chosen!=3){
+						gameWon(2);					
 					}else{
 						globalEmit('info','draw!');
 					}
-					}else{
+					}else{ //p1 ccce p2 cccs
 					if(p1chosen==3&&p2chosen==3){
 						gameWon(2);
-					}else if(p1chosen==3&&p2chosen!=3){
+					}else if(p1chosen!=3&&p2chosen==3){
 						gameWon(1);
+					}else if (p1chosen==3 && p2chosen!=3){
+						gameWon(1);					
 					}else{
 						globalEmit('info','draw!');
 					}						
@@ -125,13 +132,7 @@ function onConnection(sock){
 
 	
 		
-    player1.on('disconnect', function(){
-        console.log('player1 disconnected');
-		if(player2)
-		player2.emit('info','player has disconnected, waiting for a new player...');
-		player1=null;
-		resetGame();
-    });
+
 	
     player2.on('disconnect', function(){
         console.log('player2 disconnected');
@@ -141,26 +142,44 @@ function onConnection(sock){
 		resetGame();
     });
 		
-		
+	    player1.on('disconnect', function(){
+        console.log('player1 disconnected');
+		if(player2)
+		player2.emit('info','player has disconnected, waiting for a new player...');
+		player1=null;
+		resetGame();
+    });		
 		
 	}else{
 		player1= sock;
 		sock.emit('msg', 'waitin for player');
+		
+	    player1.on('disconnect', function(){
+        console.log('player1 disconnected');
+		if(player2)
+		player2.emit('info','player has disconnected, waiting for a new player...');
+		player1=null;
+		resetGame();
+    });	
 	}
 	
 	
 	}
+	
+	
 	function gameWon(player){
 		if(player==1){
 		player1.emit('info', 'player1 wins!');
 		player2.emit('info', 'player1 wins!');
 		p1wins++;
+		
 		}
 		if(player==2){
 		player1.emit('info', 'player2 wins!');
 		player2.emit('info', 'player2 wins!');	
 		p2wins++;
 		}
+		nextRound();
 	}
 	
 	function globalEmit(type,txt){
@@ -170,12 +189,44 @@ function onConnection(sock){
 	
 
 	function resetGame(){
+        nextRound();
+		p1wins=0;
+		p2wins=0;
+		if(player1)
+		player1.emit('score','you:0, opponent:0');
+		if(player2)
+		player2.emit('score','you:0, opponent:0');
+	}
+	
+	function nextRound(){
+		
+		if(player1)
+		player1.emit('score','you:'+p1wins+', opponent:'+p2wins);
+		if(player2)
+		player2.emit('score','you:'+p2wins+', opponent:'+p1wins);
+		
+		
 		p1 = [true,true,true,true];
 		p2 = [true,true,true,true];
 
 		p1chosen=-1;
 		p2chosen=-1;
 
-		p1wins=0;
-		p2wins=0;
+		console.log('--NEXT ROUND--');
+		
+		if(Math.round(Math.random())){
+		if(player1)
+		player1.emit('side', 1);
+		if(player2)
+		player2.emit('side', 2);
+		console.log('rolled 1');
+		side=1;
+		}else{
+		if(player1)
+		player1.emit('side', 2);
+		if(player2)
+		player2.emit('side', 1);
+		console.log('rolled 0');
+		side=0;		
+		}
 	}
