@@ -1,13 +1,23 @@
 var sock = io();
-
+var pressedAlready=false;
 
 sock.on('msg', onmsg);
 sock.on('info', oninfo);
 sock.on('side', onside);
 sock.on('score', onscore);
+sock.on('nxt', onnext);
+
+function onnext(){
+	pressedAlready=false;
+}
+
 function cl(number){
+	if(!pressedAlready){
+	pressedAlready=true;
 	sock.emit('action', number);
 	document.getElementById(number).disabled=true;
+	document.getElementById(number).className='';
+	}
 }
 
 function onscore(sc){
@@ -20,16 +30,27 @@ function onside(side){
 		document.getElementById('1').innerHTML='citizen';
 		document.getElementById('2').innerHTML='citizen';
 		document.getElementById('3').innerHTML='slave';
+		
+		document.getElementById('0').className='citizen';
+		document.getElementById('1').className='citizen';
+		document.getElementById('2').className='citizen';
+		document.getElementById('3').className='slave';
 	}else{
 		document.getElementById('0').innerHTML='citizen';
 		document.getElementById('1').innerHTML='citizen';
 		document.getElementById('2').innerHTML='citizen';
-		document.getElementById('3').innerHTML='emperor';		
+		document.getElementById('3').innerHTML='emperor';	
+
+		document.getElementById('0').className='citizen';
+		document.getElementById('1').className='citizen';
+		document.getElementById('2').className='citizen';
+		document.getElementById('3').className='emperor';		
 	}
 	document.getElementById('0').disabled=false;
 	document.getElementById('1').disabled=false;
 	document.getElementById('2').disabled=false;
 	document.getElementById('3').disabled=false;
+	pressedAlready=false;
 }
 
 function onmsg(txt){

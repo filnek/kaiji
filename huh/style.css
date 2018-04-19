@@ -1,0 +1,68 @@
+* {
+    box-sizing: border-box;
+}
+
+.container{
+	width:100%;
+	height:100%;
+}
+.buttons{
+	float:left;
+	height:10%;
+	width:100%;
+}
+.buttons button{
+	width:25%;
+	height:100%;
+	float:left;
+	margin: 0px;
+	padding: 0px;
+}
+
+.citizen {
+    background-color: #3399FF; /* Blue */
+	border:1px solid #2F89E4;
+}
+
+.slave {
+    background-color: #990000; /* Red */
+	border:1px solid #7F0101;
+}
+
+.emperor {
+    background-color: #F0F04C; /* Gold */
+	border:1px solid #CECE36;
+}
+
+
+
+.info{
+	height:75%;
+	overflow-y:scroll;
+}
+
+.chat-input{
+	height:10%;
+	width:100%;
+	float:left;
+	text-align:center;
+}
+.chat-input input{
+	width:75%;
+	height:50%;
+	float:left;
+}
+.chat-input button{
+	background-color:#00CC00;
+	border:1px solid #05B605;
+	float:left;
+	width:25%;
+	height:50%;
+	margin: 0px;
+	padding: 0px;
+}
+.chat-input a{
+	width:100%;
+	height:50%;
+
+}

@@ -74,7 +74,7 @@ function onConnection(sock){
 					}else if (p2chosen==3 && p1chosen!=3){
 						gameWon(2);					
 					}else{
-						globalEmit('info','draw!');
+						draw();
 					}
 					}else{ //p1 ccce p2 cccs
 					if(p1chosen==3&&p2chosen==3){
@@ -84,7 +84,7 @@ function onConnection(sock){
 					}else if (p1chosen==3 && p2chosen!=3){
 						gameWon(1);					
 					}else{
-						globalEmit('info','draw!');
+						draw();
 					}						
 					}
 					p1chosen=-1;
@@ -110,7 +110,7 @@ function onConnection(sock){
 					}else if (p2chosen==3 && p1chosen!=3){
 						gameWon(2);					
 					}else{
-						globalEmit('info','draw!');
+						draw();
 					}
 					}else{ //p1 ccce p2 cccs
 					if(p1chosen==3&&p2chosen==3){
@@ -120,7 +120,7 @@ function onConnection(sock){
 					}else if (p1chosen==3 && p2chosen!=3){
 						gameWon(1);					
 					}else{
-						globalEmit('info','draw!');
+						draw();
 					}						
 					}
 					p1chosen=-1;
@@ -200,18 +200,21 @@ function onConnection(sock){
 	
 	function nextRound(){
 		
-		if(player1)
+		if(player1){		
 		player1.emit('score','you:'+p1wins+', opponent:'+p2wins);
+		}
 		if(player2)
+		{
 		player2.emit('score','you:'+p2wins+', opponent:'+p1wins);
-		
+		}
 		
 		p1 = [true,true,true,true];
 		p2 = [true,true,true,true];
 
 		p1chosen=-1;
 		p2chosen=-1;
-
+		
+		
 		console.log('--NEXT ROUND--');
 		
 		if(Math.round(Math.random())){
@@ -229,4 +232,12 @@ function onConnection(sock){
 		console.log('rolled 0');
 		side=0;		
 		}
+	}
+	
+	function draw(){
+						globalEmit('info','draw!');
+						if(player1)
+						player1.emit('nxt',null);
+						if(player2)
+						player2.emit('nxt',null);		
 	}
