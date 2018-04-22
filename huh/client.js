@@ -279,7 +279,7 @@ text(tex,width/2,height/2);
 
 //score text
 textSize(12);
-text(score,width/2,height/2+height+height/4);
+text(score,width/2,height-300);
 textSize(32);
 }
 
