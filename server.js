@@ -46,8 +46,8 @@ function onConnection(sock){
 		player1.emit('info', 'match starts, player1');
 		player2.emit('info', 'match starts, player2');
 		if(Math.round(Math.random())){
-		player1.emit('side', 1);
-		player2.emit('side', 2);
+		player1.emit('side', 1); //1 slave
+		player2.emit('side', 2); //2 emperor
 		console.log('rolled 1');
 		side=1;
 		}else{
@@ -152,7 +152,7 @@ function onConnection(sock){
 		
 	}else{
 		player1= sock;
-		sock.emit('msg', 'waitin for player');
+		sock.emit('info', 'waiting for players');
 		
 	    player1.on('disconnect', function(){
         console.log('player1 disconnected');
@@ -172,11 +172,12 @@ function onConnection(sock){
 		player1.emit('info', 'player1 wins!');
 		player2.emit('info', 'player1 wins!');
 		p1wins++;
-		
+		console.log('p1 wins');
 		}
 		if(player==2){
 		player1.emit('info', 'player2 wins!');
 		player2.emit('info', 'player2 wins!');	
+		console.log('p2 wins');
 		p2wins++;
 		}
 		nextRound();
