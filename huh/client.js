@@ -442,8 +442,11 @@ function endGame(who){
 		}
 		
 		else if(player==2){
-			if(side==1){//opponent played citizen
+			if(side==1 && whichcard==4){//opponent played citizen
 			citizenFlipAnimation=0;
+			winlosedraw=2;
+			}else if(side==1 && whichcard!=4){//opponent played emperor
+			emperorFlipAnimation=0;
 			winlosedraw=2;
 			}
 			if(side==2){//opponent played slave
@@ -467,8 +470,11 @@ function endGame(who){
 		}
 		
 		else if(player==1){
-			if(side==1){//opponent played citizen
+			if(side==1 && whichcard==4){//opponent played citizen
 			citizenFlipAnimation=0;
+			winlosedraw=2;
+			}else if(side==1 && whichcard!=4){//opponent played emperor
+			emperorFlipAnimation=0;
 			winlosedraw=2;
 			}
 			else if(side==2){//opponent played slave
